@@ -6,6 +6,7 @@
 var paper = document.getElementById('paper');
 var rock = document.getElementById('rock');
 var scissors = document.getElementById('scissors');
+var output = document.getElementById('output');
 
 var computerButton; // do przypisania random liczby do rock, paper,scissors w funkcji computerMove
 //var computerPaper = 'paper';
@@ -13,30 +14,33 @@ var computerButton; // do przypisania random liczby do rock, paper,scissors w fu
 //var computerScissors = 'scissors'; 
 
 //functions
+
   //funkcja playerMove - glowna funkcja
-  function playerMove(buttonClicked) {
+function playerMove(buttonClicked) {
     console.log('You played ' + buttonClicked);
     computerMove();
     switch (buttonClicked + computerButton) { //funkcja decydujaca o wyniku
         case 'rockscissors':
         case 'paperrock':
         case 'scissorspaper':
-            console.log('Wygrales! Zagrales ' + buttonClicked + ', komputer zagral ' + computerButton);
+            //console.log('Wygrales! Zagrales ' + buttonClicked + ', komputer zagral ' + computerButton);
+            displayText('YOU WON! : You played ' + '<b>' + buttonClicked + '</b>' + ', computer played ' + '<b>' + computerButton + '</b>');
             break;
         case 'rockpaper':
         case 'paperscissors':
         case 'scissorsrock':
-            console.log('Przegrales!');
+            //console.log('Przegrales!');
+            displayText('YOU LOST! : You played ' + '<b>' + buttonClicked + '</b>' + ', computer played ' + '<b>' + computerButton + '</b>');
             break;
         case 'rockrock':
         case 'paperpaper':
         case 'scissorsscissors':
-            console.log('Remis!');
+            //console.log('Remis!');
+            displayText('DRAW! : You played ' + '<b>' + buttonClicked + '</b>' + ', computer also played ' + '<b>' + computerButton + '</b>');
             break;             
     };  
-  };
+};
 
-//playerMove();
 
   //funkcja która zczytuje w ktory przycisk klinal gracz
 function playerChocice(){
@@ -50,10 +54,11 @@ function playerChocice(){
         playerMove('scissors');
     });
 };
+
 playerChocice();
 
   //funkcja losująca liczby od 1 do 3 i przypisujaca im wartosci
-  function computerMove(){
+function computerMove(){
      var computerChoice = Math.floor((Math.random() * 3) + 1);
      console.log('computer choosed number ' + computerChoice);
      if(computerChoice == 1){
@@ -67,7 +72,10 @@ playerChocice();
         console.log('computer played ' + computerButton);
      }
      return computerChoice;
-  };
+};
   
 
-  
+  //funkcja wyswietlajaca tekst w output 
+  var displayText = function (text) {
+    output.innerHTML = output.innerHTML + text + '<br>';
+  }; 
