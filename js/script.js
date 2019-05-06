@@ -6,12 +6,12 @@
 var paper = document.getElementById('paper');
 var rock = document.getElementById('rock');
 var scissors = document.getElementById('scissors');
-var output = document.getElementById('output');
-
+var output = document.getElementById('output'); // pole do wyswietlania wyniku meczu
+var result = document.getElementById('result'); // pole do wyswietlania liczby wygranych rund
+var playerButton = document.getElementsByClassName('button'); // moze sie przydac w etapie 2
 var computerButton; // do przypisania random liczby do rock, paper,scissors w funkcji computerMove
-//var computerPaper = 'paper';
-//var computerRock = 'rock';
-//var computerScissors = 'scissors'; 
+var playerRounds = 0; //liczba wygranych rund gracza - poczatkowa wartosc
+var computerRounds = 0; //liczba wygranych tur komputera - poczatkowa wartosc
 
 //functions
 
@@ -25,12 +25,18 @@ function playerMove(buttonClicked) {
         case 'scissorspaper':
             //console.log('Wygrales! Zagrales ' + buttonClicked + ', komputer zagral ' + computerButton);
             displayText('YOU WON! : You played ' + '<b>' + buttonClicked + '</b>' + ', computer played ' + '<b>' + computerButton + '</b>');
+            //playerWonRounds();
+            playerRounds++;
+            displayWonRounds();
             break;
         case 'rockpaper':
         case 'paperscissors':
         case 'scissorsrock':
             //console.log('Przegrales!');
             displayText('YOU LOST! : You played ' + '<b>' + buttonClicked + '</b>' + ', computer played ' + '<b>' + computerButton + '</b>');
+            //computerWonRounds();
+            computerRounds++;
+            displayWonRounds();
             break;
         case 'rockrock':
         case 'paperpaper':
@@ -76,6 +82,56 @@ function computerMove(){
   
 
   //funkcja wyswietlajaca tekst w output 
-  var displayText = function (text) {
+  var displayText = function(text) {
     output.innerHTML = output.innerHTML + text + '<br>';
   }; 
+
+  //funkcja wyswietlajaca liczbe wygranych rund
+  var displayWonRounds = function() { 
+      clearText();
+      result.innerHTML = result.innerHTML + 'Number of won rounds: '+'<br><br>' + '<b>' + 'Player: ' + '</b>' + playerRounds + '<b>' + ' Computer: ' + '</b>' + computerRounds + '<br><br>';
+  };
+
+  //funkcja czysczaca text w WonRounds
+    function clearText(){
+        result.innerHTML = '';
+    }; 
+
+  //funkcja zliczajaca i wyswietlajaca wygrane gracza - raczej nieportrzebna bedzie
+  function playerWonRounds() {
+      playerRounds++;
+      console.log(playerRounds);
+      return playerRounds;
+  };
+  //funkcja zliczajaca i wyswietlajaca wygrane komputera - raczej niepotrzebna bedzie
+  function ComputerWonRounds() {
+      ComputerRounds++;
+      console.log(ComputerRounds);
+      return ComputerRounds;
+  };
+
+
+  /*
+  //testowa funkcja zliczajaca liczbe klikniec w przycisk
+  var playerCount = 0;
+  playerButton.onclick = function (){
+      playerCount++;
+      console.log('you clicked ' + playerButton + playerCount + ' times');
+    };
+
+console.log(playerButton);
+
+
+paper.onclick = function (){
+    playerCount++;
+    console.log('you clicked button '  + playerCount + ' times');
+  };
+rock.onclick = function (){
+    playerCount++;
+    console.log('you clicked button '  + playerCount + ' times');
+  };
+scissors.onclick = function (){
+    playerCount++;
+    console.log('you clicked button '  + playerCount + ' times');
+  };
+  */
