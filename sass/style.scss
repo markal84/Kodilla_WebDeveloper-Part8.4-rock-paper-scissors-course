@@ -30,6 +30,7 @@ body {
 }
 .wrapper {
     @include centerFlex;
+    flex-direction: column;
     max-width: 80%;
     margin: 0 auto;
 }
@@ -60,7 +61,18 @@ body {
     }
   
   }
-
+.buttonNewGame {
+  margin-top: 30px;
+  transition: all .3s ease-in-out;
+  @include createButton(150px, 60px, 50px,rgb(174, 255, 171),rgb(45, 255, 3), rgba(30, 255, 60, 0.5));
+  &:hover{
+    transform:translatey(10px);
+    box-shadow: none;
+  }
+  &:active{
+    opacity: 0.5;
+  }
+}
 #output {
     width: 100%;
     text-align: center;

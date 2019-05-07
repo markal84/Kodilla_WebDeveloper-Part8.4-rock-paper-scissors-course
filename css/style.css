@@ -16,6 +16,8 @@ body {
       justify-content: space-evenly;
   -ms-flex-align: center;
       align-items: center;
+  -ms-flex-direction: column;
+      flex-direction: column;
   max-width: 80%;
   margin: 0 auto;
 }
@@ -85,6 +87,30 @@ body {
 }
 
 .container .button:active {
+  opacity: 0.5;
+}
+
+.buttonNewGame {
+  margin-top: 30px;
+  transition: all .3s ease-in-out;
+  width: 150px;
+  height: 60px;
+  border-radius: 50px;
+  background-image: linear-gradient(135deg, #aeffab 0%, #2dff03 100%);
+  box-shadow: 0 20px 30px -6px rgba(30, 255, 60, 0.5);
+  outline: none;
+  border: none;
+  cursor: pointer;
+  font-size: 24px;
+  color: white;
+}
+
+.buttonNewGame:hover {
+  transform: translatey(10px);
+  box-shadow: none;
+}
+
+.buttonNewGame:active {
   opacity: 0.5;
 }
 
