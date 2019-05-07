@@ -15,11 +15,7 @@ var computerButton; // do przypisania random liczby do rock, paper,scissors w fu
 var playerRounds = 0; //liczba wygranych rund gracza - poczatkowa wartosc
 var computerRounds = 0; //liczba wygranych tur komputera - poczatkowa wartosc
 var noTurns; //liczba tur ustalona przy kliknieciu na new game
-var preventGame; /* = function() {//zmienna przypisana do funkcji ktora odpowiada za to czy mozna grac dalej czy nie
-    output.insertAdjacentHTML('beforebegin','<b>' + 'You won the entire game!' + '</b>'+ ' Press NEW GAME button to play again'+'<br>');
-    output.innerHTML = '';
-    result.innerHTML = '';
-}; nie chce dzialac */
+var preventGame; //do wykorzystania w funkcji blokujaca dalsza gre, zmienna ktora ma wlasciwosci true lub false 
 
 //functions
 
