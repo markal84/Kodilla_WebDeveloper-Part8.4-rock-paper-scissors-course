@@ -105,9 +105,9 @@ function computerMove(){
   //funkcja zczytujaca wartosc z newGame i wyswietlajaca komunikat w polu result
   newGame.addEventListener('click', function(){
     noTurns = window.prompt('Plase specify number of turns necessery to win the game');
-    if(isNaN(noTurns) || noTurns == '' || noTurns == null || noTurns == 0)
+    if(isNaN(noTurns) || noTurns == '' || noTurns == null || noTurns == 0 || noTurns == 1)
     {
-        displayText('Can only be a number and larger than 0!');
+        displayText('Can only be a number and larger than 1!');
     } else {
         displayRounds();
         //console.log('number of turns to win: ' + noTurns);
