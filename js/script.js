@@ -110,13 +110,20 @@ function computerMove(){
         displayText('Can only be a number and larger than 1!');
     } else {
         displayRounds();
+        paper.style.visibility = "visible";
+        rock.style.visibility = "visible";
+        scissors.style.visibility = "visible";
         //console.log('number of turns to win: ' + noTurns);
     }
   });
   //funkcja wyswietlajaca liczbe ustalonych rund
     var displayRounds = function(){
-        result.insertAdjacentHTML('beforebegin','Numbers of turns to win the game is: ' + '<b>' + noTurns + '</b>' + '<br><br>');
-      };    
+        result.insertAdjacentHTML('afterbegin','Numbers of turns to win the game is: ' + '<b>' + noTurns + '</b>' + '<br><br>');
+      };
+        //funkcja czysczaca liczbe rund w result
+    function clearRounds(){
+        result.insertAdjacentHTML('afterbegin','');
+    };    
 
   //funkcja ktora sprawdza czy gracz lub komputer nie ma wiekszego score niz liczba rund i blokuje gre jesli score jest osiagniety
   function checkIfWon(){
@@ -125,8 +132,12 @@ function computerMove(){
         output.insertAdjacentHTML('beforebegin','<b>' + 'You won the entire game!' + '</b>'+ ' Press NEW GAME button to play again'+'<br>');
         output.innerHTML = '';
         result.innerHTML = '';
+        clearRounds();
+        paper.style.visibility = "hidden";
+        rock.style.visibility = "hidden";
+        scissors.style.visibility = "hidden";
 
-        //zablokowanie dalszej gry
+        /*//zablokowanie dalszej gry
         paper.addEventListener('click', function(){ // jak to skrocic i zastosowac 'this.addEventListener'
             output.insertAdjacentHTML('afterbegin','Press NEW GAME button to play again'+'<br>');
             output.innerHTML = '';
@@ -141,15 +152,19 @@ function computerMove(){
             output.insertAdjacentHTML('afterbegin','Press NEW GAME button to play again'+'<br>');
             output.innerHTML = '';
             result.innerHTML = '';
-         }); 
+         }); */
 
     }else if(computerRounds == noTurns){
         //console.log('You lost entire game!!');
         output.insertAdjacentHTML('beforebegin','<b>' + 'You lost the game!' + '</b>'+ ' Press NEW GAME button to play again'+'<br>');
         output.innerHTML = '';
         result.innerHTML = '';
+        clearRounds();
+        paper.style.visibility = "hidden";
+        rock.style.visibility = "hidden";
+        scissors.style.visibility = "hidden";
 
-        paper.addEventListener('click', function(){
+       /* paper.addEventListener('click', function(){
             output.insertAdjacentHTML('afterbegin','Press NEW GAME button to play again'+'<br>');
             output.innerHTML = '';
             result.innerHTML = '';
@@ -163,7 +178,7 @@ function computerMove(){
             output.insertAdjacentHTML('afterbegin','Press NEW GAME button to play again'+'<br>');
             output.innerHTML = '';
             result.innerHTML = '';
-        });
+        }); */
 
     }else{
         console.log('draw');

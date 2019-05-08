@@ -19,6 +19,7 @@
     cursor: pointer;
     font-size: 24px;
     color: white;
+    visibility: hidden;
   }
 
 // main page
@@ -64,6 +65,7 @@ body {
 .buttonNewGame {
   margin-top: 30px;
   transition: all .3s ease-in-out;
+  visibility: visible !important;
   @include createButton(150px, 60px, 50px,rgb(174, 255, 171),rgb(45, 255, 3), rgba(30, 255, 60, 0.5));
   &:hover{
     transform:translatey(10px);

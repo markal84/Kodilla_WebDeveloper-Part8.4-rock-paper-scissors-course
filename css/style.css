@@ -53,6 +53,7 @@ body {
   cursor: pointer;
   font-size: 24px;
   color: white;
+  visibility: hidden;
 }
 
 .container .button:nth-child(2) {
@@ -66,6 +67,7 @@ body {
   cursor: pointer;
   font-size: 24px;
   color: white;
+  visibility: hidden;
 }
 
 .container .button:nth-child(3) {
@@ -79,6 +81,7 @@ body {
   cursor: pointer;
   font-size: 24px;
   color: white;
+  visibility: hidden;
 }
 
 .container .button:hover {
@@ -93,6 +96,7 @@ body {
 .buttonNewGame {
   margin-top: 30px;
   transition: all .3s ease-in-out;
+  visibility: visible !important;
   width: 150px;
   height: 60px;
   border-radius: 50px;
@@ -103,6 +107,7 @@ body {
   cursor: pointer;
   font-size: 24px;
   color: white;
+  visibility: hidden;
 }
 
 .buttonNewGame:hover {
