@@ -118,11 +118,11 @@ function computerMove(){
   });
   //funkcja wyswietlajaca liczbe ustalonych rund
     var displayRounds = function(){
-        result.insertAdjacentHTML('afterbegin','Numbers of turns to win the game is: ' + '<b>' + noTurns + '</b>' + '<br><br>');
+        result.insertAdjacentHTML('beforebegin','Numbers of turns to win the game is: ' + '<b>' + noTurns + '</b>' + '<br><br>');
       };
         //funkcja czysczaca liczbe rund w result
     function clearRounds(){
-        result.insertAdjacentHTML('afterbegin','');
+        result.insertAdjacentHTML('beforebegin','');
     };    
 
   //funkcja ktora sprawdza czy gracz lub komputer nie ma wiekszego score niz liczba rund i blokuje gre jesli score jest osiagniety
