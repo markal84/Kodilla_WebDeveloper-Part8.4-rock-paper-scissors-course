@@ -10,12 +10,15 @@ var newGame = document.getElementById('newGame'); // przycisk new game
 
 var output = document.getElementById('output'); // pole do wyswietlania wyniku meczu
 var result = document.getElementById('result'); // pole do wyswietlania liczby wygranych rund
+var modalOutput = document.getElementById('modal-one-content'); //pole do wyswietlania wyniku meczu w modalu
+var modalSummary = document.getElementById('modal-one'); // modal z wynikami i przebiegiem gry
 
   //main variable 
 var params = {
     playerRounds : 0, //number of player rounds
     computerRounds : 0, //number of computer rounds
-    noTurns: '', //number of turns set while clicking new game button  
+    noTurns: '', //number of turns set while clicking new game button
+    progress: [] //pusta tablica sluzaca do zapisywania parametrow rozgrywki  
 }
  
 var computerButton; // do przypisania random liczby do rock, paper,scissors w funkcji computerMove
@@ -37,7 +40,7 @@ function playerMove(buttonClicked) {
         case 'scissorspaper':
             displayText('YOU WON! : You played ' + '<b>' + buttonClicked + '</b>' + ', computer played ' + '<b>' + computerButton + '</b>');
             params.playerRounds++;
-            console.log('player won games: '+ params.playerRounds);
+            //console.log('player won games: '+ params.playerRounds);
             displayWonRounds();
             checkIfWon();
             break;
@@ -46,7 +49,7 @@ function playerMove(buttonClicked) {
         case 'scissorsrock':
             displayText('YOU LOST! : You played ' + '<b>' + buttonClicked + '</b>' + ', computer played ' + '<b>' + computerButton + '</b>');
             params.computerRounds++;
-            console.log('computer won games: '+ params.computerRounds);
+            //console.log('computer won games: '+ params.computerRounds);
             displayWonRounds();
             checkIfWon();
             break;
@@ -130,25 +133,38 @@ function computerMove(){
         //funkcja czysczaca liczbe rund w result
     function clearRounds(){
         result.insertAdjacentHTML('beforebegin','');
+        params.playerRounds = 0;
+        params.computerRounds = 0;
     };    
+
+    function showModal(){ // funkcja pokazujaca modal
+        document.querySelector('#modal-overlay').classList.add('show');
+        modalSummary.classList.add('show');
+    };
 
   //funkcja ktora sprawdza czy gracz lub komputer nie ma wiekszego score niz liczba rund i blokuje gre jesli score jest osiagniety
   function checkIfWon(){
     if(params.playerRounds == params.noTurns){
         //wyswietlenie wygranej gracza
-        output.insertAdjacentHTML('beforebegin','<b>' + 'You won the entire game!' + '</b>'+ ' Press NEW GAME button to play again'+'<br>');
+        //output.insertAdjacentHTML('beforebegin','<b>' + 'You won the entire game!' + '</b>'+ '<br>' + ' Press NEW GAME button to play again'+'<br>');
+        modalOutput.insertAdjacentHTML('afterbegin','<br>' + '<b>' + 'You won the entire game!' + '</b>'+ '<br><br>' + ' Press NEW GAME button to play again'+'<br>');
+        modalOutput.insertAdjacentHTML('afterbegin','');
         output.innerHTML = '';
         result.innerHTML = '';
+        showModal();
         clearRounds();
         paper.style.visibility = "hidden";
         rock.style.visibility = "hidden";
         scissors.style.visibility = "hidden";
 
     }else if(params.computerRounds == params.noTurns){
-        //console.log('You lost entire game!!');
-        output.insertAdjacentHTML('beforebegin','<b>' + 'You lost the game!' + '</b>'+ ' Press NEW GAME button to play again'+'<br>');
+        //wyswietlenie wygranej komputera
+        //output.insertAdjacentHTML('beforebegin','<b>' + 'You lost the game!' + '</b>'+ '<br>' + ' Press NEW GAME button to play again'+'<br>');
+        modalOutput.insertAdjacentHTML('afterbegin','<br>' + '<b>' + 'You lost the game!' + '</b>'+ '<br><br>' + ' Press NEW GAME button to play again'+'<br>');
+        modalOutput.innerHTML('');
         output.innerHTML = '';
         result.innerHTML = '';
+        showModal();
         clearRounds();
         paper.style.visibility = "hidden";
         rock.style.visibility = "hidden";
@@ -157,3 +173,86 @@ function computerMove(){
         console.log('draw');
     }
   };
+
+// modals code
+
+(function(){ 
+	/* W kodzie HTML i CSS dodaliśmy style dla prostego modala, który będzie zawsze wyśrodkowany w oknie. 
+	
+	Teraz wystarczy napisać funkcję otwierającą modal:
+	*/
+	
+	var showModal = function(event){
+		event.preventDefault();
+		document.querySelector('#modal-overlay').classList.add('show');
+    /*var link = this.getAttribute('href'); // oobieramy atrybut z wlasciwosci href kliknietego linku 
+    console.log(link);
+    link = link.replace('#', ''); // usuwamy # z atrybutu href
+    console.log("after using replace() on link variable: " + link);
+    var selectedModal = document.getElementById(link); // zaznaczamy modal o Id kliknietego linku */
+    
+    for(var i = 0; i < modalLinks.length; i++) {
+      modals[i].classList.remove('show');
+    }
+    selectedModal.classList.add('show'); // zmienic ten parametr do gry kamien nozyce
+	};
+	
+	// Mimo, że obecnie mamy tylko jeden link, stosujemy kod dla wielu linków. W ten sposób nie będzie trzeba go zmieniać, kiedy zechcemy mieć więcej linków lub guzików otwierających modale
+	
+	var modalLinks = document.querySelectorAll('.show-modal');
+	
+	for(var i = 0; i < modalLinks.length; i++){
+		modalLinks[i].addEventListener('click', showModal);
+	}
+	
+	// Dodajemy też funkcję zamykającą modal, oraz przywiązujemy ją do kliknięć na elemencie z klasą "close". 
+
+	var hideModal = function(event){
+		event.preventDefault();
+		document.querySelector('#modal-overlay').classList.remove('show');
+	};
+	
+	var closeButtons = document.querySelectorAll('.modal .close');
+	
+	for(var i = 0; i < closeButtons.length; i++){
+		closeButtons[i].addEventListener('click', hideModal);
+	}
+	
+	// Dobrą praktyką jest również umożliwianie zamykania modala poprzez kliknięcie w overlay. 
+	
+	document.querySelector('#modal-overlay').addEventListener('click', hideModal);
+	
+	// Musimy jednak pamiętać, aby zablokować propagację kliknięć z samego modala - inaczej każde kliknięcie wewnątrz modala również zamykałoby go. 
+	
+	var modals = document.querySelectorAll('.modal');
+	
+	for(var i = 0; i < modals.length; i++){
+		modals[i].addEventListener('click', function(event){
+			event.stopPropagation();
+		});
+	}
+	
+	/* I to wszystko - mamy już działający modal! 
+	
+	ĆWICZENIE: 
+	Zmień funkcję showModal tak, aby w momencie wyświetlania była zmieniana treść nagłówka na dowolną inną, np. "Modal header". 
+	*/
+  for(var i = 0; i < modalLinks.length; i++){
+  //console.log(modalLinks[i]);  
+  //console.log(modalLinks[i].getAttribute('href'));
+  }
+  
+  
+  /*var link1 = {
+    href: '#modal-one',
+    clicked: 'yes',
+    show: function(){
+      console.log(this.href + " " + this.clicked);
+      }
+  }
+  link1.show ();*/
+  
+	//console.log(modalLinks[0]);
+  //console.log(modalLinks[0].getAttribute('href'));
+  
+})();   
