@@ -4,22 +4,29 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "npm-run-all",
-    "test:html": "globstar nu-html-checker *.html",
     "init-project": "npm install && npm-run-all init:*",
-    "init:dirs": "mkdirp sass css vendor images js",
+    "init:dirs": "mkdirp sass css vendor images js production_only",
     "init:files": "touch README.md index.html sass/style.scss js/script.js",
     "init:gitignore": "curl https://raw.githubusercontent.com/github/gitignore/master/Node.gitignore -o .gitignore",
-    "build": "npm-run-all build:*",
+    "test": "npm-run-all test:*",
+    "test:html": "globstar nu-html-checker *.html",
+    "build": "npm-run-all build:* test",
     "build:clean": "rimraf css/*.css",
-    "build:sass": "node-sass --output-style compact -o css sass",
+    "build:sass": "node-sass --output-style compressed -x -o css sass",
     "build:autoprefixer": "autoprefixer-cli css/style.css",
     "build-dev:sass": "node-sass --output-style expanded --source-map true -o css sass",
+    "build:tinypng": "tinypng images/ -r -k A2GVgsJYb95I2tm2qFJQ8LEe0NaU03mO",
     "watch": "npm-run-all build -p watch:*",
     "watch:browser-sync": "browser-sync start --server --files css/*.css *.html",
     "sass": "node-sass --output-style expanded --source-map true -o css sass",
     "autoprefixer": "autoprefixer-cli css/style.css",
-    "watch:sassprefixer": "onchange -d 100 sass/* -- npm-run-all sass -s autoprefixer"
+    "watch:sassprefixer": "onchange -d 100 sass/* -- npm-run-all sass -s autoprefixer",
+	"work": "npm-run-all project -p watch:*",
+	"project": "npm-run-all project:*",
+	"project:clean": "rimraf css/*.css",
+	"project:sass": "node-sass --output-style expanded --source-map true -o css sass",
+	"project:autoprefixer": "autoprefixer-cli css/style.css"
+	
   },
   "keywords": [],
   "author": "",
@@ -33,6 +40,7 @@
     "npm-run-all": "^4.1.5",
     "nu-html-checker": "^0.1.0",
     "onchange": "^5.2.0",
-    "rimraf": "^2.6.3"
+    "rimraf": "^2.6.3",
+    "tinypng-cli": "0.0.7"
   }
 }
