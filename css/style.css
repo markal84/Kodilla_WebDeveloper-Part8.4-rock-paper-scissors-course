@@ -141,7 +141,7 @@ body {
 .modal {
   display: none;
   background: #fff;
-  width: 400px;
+  max-width: 600px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -174,5 +174,10 @@ body {
   min-height: 30px;
   padding: 5px 30px;
   text-align: center;
+}
+
+.table {
+  width: 80%;
+  border: 1px solid #000;
 }
 /*# sourceMappingURL=style.css.map */

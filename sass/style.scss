@@ -93,11 +93,10 @@ body {
 		display: block;
 	}
 }
-
 .modal {
 	display: none;
 	background: #fff;
-	width: 400px;
+	max-width: 600px;
 	position: absolute;
 	top: 50%;
 	left: 50%;
@@ -106,7 +105,6 @@ body {
 	&.show {
 		display: block;
 	}
-	
 	.close {
 		position: absolute;
 		right: 0;
@@ -115,7 +113,6 @@ body {
 		color: #000;
 		text-decoration: none;
 	}
-	
 	header {
 		font-size: 20px;
 		line-height: 30px;
@@ -124,10 +121,16 @@ body {
     padding: 0 30px;
     text-align: center;
 	}
-
 	.content {
 		min-height: 30px;
     padding: 5px 30px;
     text-align: center;
 	}
+}
+
+//table
+.table {
+  width: 80%;
+  border: 1px solid #000;
+
 }

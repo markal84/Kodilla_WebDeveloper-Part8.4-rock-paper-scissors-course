@@ -6,34 +6,64 @@
 var paper = document.getElementById('paper');
 var rock = document.getElementById('rock');
 var scissors = document.getElementById('scissors');
+var buttons = document.getElementsByClassName('player-move'); // wszystkie buttony gracza
 var newGame = document.getElementById('newGame'); // przycisk new game
 
 var output = document.getElementById('output'); // pole do wyswietlania wyniku meczu
 var result = document.getElementById('result'); // pole do wyswietlania liczby wygranych rund
 var modalOutput = document.getElementById('modal-one-content'); //pole do wyswietlania wyniku meczu w modalu
+var tableOutput = document.getElementById('modal-one-table'); // pole do wyswietlania tabeli z przebiegiem gry w modalu
 var modalSummary = document.getElementById('modal-one'); // modal z wynikami i przebiegiem gry
 
+var computerButton; // do przypisania random liczby do rock, paper,scissors w funkcji computerMove
+var preventGame; //do wykorzystania w funkcji blokujaca dalsza gre, zmienna ktora ma wlasciwosci true lub false 
+
+var testData = {noRunds: 0, playerMove: 'scissorrs', match: 'won'};
+var testData2 = {noRunds: 1, playerMove: 'rock', match: 'lost'};
+ 
   //main variable 
 var params = {
     playerRounds : 0, //number of player rounds
     computerRounds : 0, //number of computer rounds
     noTurns: '', //number of turns set while clicking new game button
-    progress: [] //pusta tablica sluzaca do zapisywania parametrow rozgrywki  
+    noRounds: 0, // round number
+    progress: [] //pusta tablica sluzaca do zapisywania parametrow rozgrywki
+    
 }
- 
-var computerButton; // do przypisania random liczby do rock, paper,scissors w funkcji computerMove
-//var playerRounds = 0; //liczba wygranych rund gracza - poczatkowa wartosc
-//var computerRounds = 0; //liczba wygranych tur komputera - poczatkowa wartosc
-//var noTurns; //liczba tur ustalona przy kliknieciu na new game
-var preventGame; //do wykorzystania w funkcji blokujaca dalsza gre, zmienna ktora ma wlasciwosci true lub false 
 
-var buttons = document.getElementsByClassName('player-move'); // wszystkie buttony gracza
+//funkcja testowa sluzaca to dodawania obiektow do tablicy
+var pushData = function(){
+  params.progress.push(testData);
+  params.progress.push(testData2);
+  //console.log(params.progress);
+};
+pushData();
+
+//funkcja testowa sluzaca do dodawania wartosci kluczow do obiektu
+var pushValues = function(){
+  var values = {
+    noRound: params.noRounds,
+    playerMove: 'buttonClicked',
+    computerMove: 'computerButton',
+    roundResult: '',
+    matchResult: (params.playerRounds) + ' - ' + (params.computerRounds)
+  };
+  console.log(values);
+};
+
+
+
+
+
 
 //functions
 
   //funkcja playerMove - glowna funkcja
 function playerMove(buttonClicked) {
+    //console.log('In function playerMove: ' + buttonClicked);
     computerMove();
+    params.noRounds++; // each click increase round number
+    pushValues();
     switch (buttonClicked + computerButton) { //funkcja decydujaca o wyniku
         case 'rockscissors':
         case 'paperrock':
@@ -58,7 +88,7 @@ function playerMove(buttonClicked) {
         case 'scissorsscissors':
             displayText('DRAW! : You played ' + '<b>' + buttonClicked + '</b>' + ', computer also played ' + '<b>' + computerButton + '</b>');
             break;             
-    };  
+    }; 
 };
 
 // petla przechodzaca przez wszystkie buttony i uruchamiajaca funkcje playerMove z opdpowiednim argumentem, zastepuje funkcje playerChoice();
@@ -128,11 +158,12 @@ function computerMove(){
   });
   //funkcja wyswietlajaca liczbe ustalonych rund
     var displayRounds = function(){
-        result.insertAdjacentHTML('beforebegin','Numbers of turns to win the game is: ' + '<b>' + params.noTurns + '</b>' + '<br><br>');
+      result.innerHTML = ('');
+      result.insertAdjacentHTML('beforebegin','Numbers of turns to win the game is: ' + '<b>' + params.noTurns + '</b>' + '<br><br>');
       };
         //funkcja czysczaca liczbe rund w result
     function clearRounds(){
-        result.insertAdjacentHTML('beforebegin','');
+        //result.insertAdjacentHTML('beforebegin','');
         params.playerRounds = 0;
         params.computerRounds = 0;
     };    
@@ -147,8 +178,8 @@ function computerMove(){
     if(params.playerRounds == params.noTurns){
         //wyswietlenie wygranej gracza
         //output.insertAdjacentHTML('beforebegin','<b>' + 'You won the entire game!' + '</b>'+ '<br>' + ' Press NEW GAME button to play again'+'<br>');
+        modalOutput.innerHTML = ('');
         modalOutput.insertAdjacentHTML('afterbegin','<br>' + '<b>' + 'You won the entire game!' + '</b>'+ '<br><br>' + ' Press NEW GAME button to play again'+'<br>');
-        modalOutput.insertAdjacentHTML('afterbegin','');
         output.innerHTML = '';
         result.innerHTML = '';
         showModal();
@@ -160,8 +191,8 @@ function computerMove(){
     }else if(params.computerRounds == params.noTurns){
         //wyswietlenie wygranej komputera
         //output.insertAdjacentHTML('beforebegin','<b>' + 'You lost the game!' + '</b>'+ '<br>' + ' Press NEW GAME button to play again'+'<br>');
+        modalOutput.innerHTML = ('');
         modalOutput.insertAdjacentHTML('afterbegin','<br>' + '<b>' + 'You lost the game!' + '</b>'+ '<br><br>' + ' Press NEW GAME button to play again'+'<br>');
-        modalOutput.innerHTML('');
         output.innerHTML = '';
         result.innerHTML = '';
         showModal();
