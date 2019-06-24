@@ -9,58 +9,74 @@ var scissors = document.getElementById('scissors');
 var buttons = document.getElementsByClassName('player-move'); // wszystkie buttony gracza
 var newGame = document.getElementById('newGame'); // przycisk new game
 
+  //outputs
 var output = document.getElementById('output'); // pole do wyswietlania wyniku meczu
 var result = document.getElementById('result'); // pole do wyswietlania liczby wygranych rund
 var modalOutput = document.getElementById('modal-one-content'); //pole do wyswietlania wyniku meczu w modalu
 var tableOutput = document.getElementById('modal-one-table'); // pole do wyswietlania tabeli z przebiegiem gry w modalu
-var modalSummary = document.getElementById('modal-one'); // modal z wynikami i przebiegiem gry
+var modalSummary = document.getElementById('modal-one'); // modal z wynikami i przebiegiem gry pokazywanym w tabeli
 
+  //moves
 var computerButton; // do przypisania random liczby do rock, paper,scissors w funkcji computerMove
 var preventGame; //do wykorzystania w funkcji blokujaca dalsza gre, zmienna ktora ma wlasciwosci true lub false 
 
-var testData = {noRunds: 0, playerMove: 'scissorrs', match: 'won'};
-var testData2 = {noRunds: 1, playerMove: 'rock', match: 'lost'};
- 
+
   //main variable 
 var params = {
     playerRounds : 0, //number of player rounds
     computerRounds : 0, //number of computer rounds
     noTurns: '', //number of turns set while clicking new game button
     noRounds: 0, // round number
-    progress: [] //pusta tablica sluzaca do zapisywania parametrow rozgrywki
-    
-}
-
-//funkcja testowa sluzaca to dodawania obiektow do tablicy
-var pushData = function(){
-  params.progress.push(testData);
-  params.progress.push(testData2);
-  //console.log(params.progress);
+    progress: [], //pusta tablica sluzaca do zapisywania parametrow rozgrywki
+    playerCurrentMove: '', // zmienna przechowujaca ruch gracza w danej turze
+    computerCurrentMove: '', //zmienna przechowujaca ruch komputera w danej turze
+    roundStatus: '' //zmienna ktora bedzie wyswietlac won/lost lub draw dla danej rundy    
 };
-pushData();
-
-//funkcja testowa sluzaca do dodawania wartosci kluczow do obiektu
-var pushValues = function(){
-  var values = {
-    noRound: params.noRounds,
-    playerMove: 'buttonClicked',
-    computerMove: 'computerButton',
-    roundResult: '',
-    matchResult: (params.playerRounds) + ' - ' + (params.computerRounds)
-  };
-  console.log(values);
-};
-
-
-
-
 
 
 //functions
 
+  //funkcja sluzaca do tworzenia obiektu i dodawania wartosci kluczow do obiektu
+var pushValues = function(){
+  var values = { // tworzymy zmienna values przechowujaca parametry rundy
+    noRound: params.noRounds,
+    playerMove: params.playerCurrentMove,
+    computerMove: params.computerCurrentMove,
+    roundResult: params.roundStatus,
+    matchResult:'You: '+ (params.playerRounds) + ' - ' + 'Comp: '+ (params.computerRounds)
+  };
+  //funkcja ktora dodaje obiekt z parametrami rundy do tabliby progress
+  //console.log(values);
+  (function(){ 
+  params.progress.push(values);
+  console.log(params.progress);
+  var valuesLength = Object.keys(values);
+  console.log(valuesLength);
+})();
+  // funkcja tworzaca tabele
+  function createTable(){
+    var tbl = document.createElement('table');
+    tbl.classList.add('table');
+    var tbody = document.createElement('tbody');
+    for ( var i = 0; i < params.progress.length; i++) {
+      var tr = document.createElement('tr')
+    }
+    /*for ( var j = 0; j < valuesLength; j++) {
+      var td = document.createElement('td');
+    } */
+    tbody.appendChild(tr);
+    //tbody.appendChild(td);
+    tbl.appendChild(tbody);
+    tableOutput.appendChild(tbl);
+  };
+  createTable();
+};
+
+  
+
   //funkcja playerMove - glowna funkcja
 function playerMove(buttonClicked) {
-    //console.log('In function playerMove: ' + buttonClicked);
+    params.playerCurrentMove = buttonClicked; // dzieki temu do zmiennej w params trafi aktualny ruch gracza
     computerMove();
     params.noRounds++; // each click increase round number
     pushValues();
@@ -68,6 +84,7 @@ function playerMove(buttonClicked) {
         case 'rockscissors':
         case 'paperrock':
         case 'scissorspaper':
+            params.roundStatus = 'You Won';
             displayText('YOU WON! : You played ' + '<b>' + buttonClicked + '</b>' + ', computer played ' + '<b>' + computerButton + '</b>');
             params.playerRounds++;
             //console.log('player won games: '+ params.playerRounds);
@@ -77,6 +94,7 @@ function playerMove(buttonClicked) {
         case 'rockpaper':
         case 'paperscissors':
         case 'scissorsrock':
+            params.roundStatus = 'You Lost';
             displayText('YOU LOST! : You played ' + '<b>' + buttonClicked + '</b>' + ', computer played ' + '<b>' + computerButton + '</b>');
             params.computerRounds++;
             //console.log('computer won games: '+ params.computerRounds);
@@ -86,6 +104,7 @@ function playerMove(buttonClicked) {
         case 'rockrock':
         case 'paperpaper':
         case 'scissorsscissors':
+            params.roundStatus = 'Draw';
             displayText('DRAW! : You played ' + '<b>' + buttonClicked + '</b>' + ', computer also played ' + '<b>' + computerButton + '</b>');
             break;             
     }; 
@@ -97,21 +116,6 @@ for ( var i = 0; i < buttons.length; i++ ) { // dla kazdego buttona
     });
 }; 
 
-  //funkcja która zczytuje w ktory przycisk klinal gracz
-/*function playerChocice(){
-    paper.addEventListener('click', function(){
-        playerMove('paper');
-    });
-    rock.addEventListener('click', function(){
-        playerMove('rock');
-    });
-    scissors.addEventListener('click', function(){
-        playerMove('scissors');
-    }); 
-
-};*/
-
-//playerChocice();
 
   //funkcja losująca liczby od 1 do 3 i przypisujaca im wartosci
 function computerMove(){
@@ -123,6 +127,7 @@ function computerMove(){
      }else{
         computerButton = 'scissors';
      }
+     params.computerCurrentMove = computerButton; // dzieki temu do zmiennej w params trafi aktualny ruch komputera
      return computerChoice;
 };
   
@@ -263,27 +268,5 @@ function computerMove(){
 		});
 	}
 	
-	/* I to wszystko - mamy już działający modal! 
-	
-	ĆWICZENIE: 
-	Zmień funkcję showModal tak, aby w momencie wyświetlania była zmieniana treść nagłówka na dowolną inną, np. "Modal header". 
-	*/
-  for(var i = 0; i < modalLinks.length; i++){
-  //console.log(modalLinks[i]);  
-  //console.log(modalLinks[i].getAttribute('href'));
-  }
-  
-  
-  /*var link1 = {
-    href: '#modal-one',
-    clicked: 'yes',
-    show: function(){
-      console.log(this.href + " " + this.clicked);
-      }
-  }
-  link1.show ();*/
-  
-	//console.log(modalLinks[0]);
-  //console.log(modalLinks[0].getAttribute('href'));
   
 })();   
