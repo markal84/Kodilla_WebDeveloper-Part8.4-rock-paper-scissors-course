@@ -33,48 +33,77 @@ var params = {
     roundStatus: '' //zmienna ktora bedzie wyswietlac won/lost lub draw dla danej rundy    
 };
 
-
 //functions
 
   //funkcja sluzaca do tworzenia obiektu i dodawania wartosci kluczow do obiektu
 var pushValues = function(){
-  var values = { // tworzymy zmienna values przechowujaca parametry rundy
+  var values = { // tworzymy zmienna values przechowujaca parametry rundy ( moze trzeba ja zadeklarowac globalnie zamiast w funkcji)
     noRound: params.noRounds,
     playerMove: params.playerCurrentMove,
     computerMove: params.computerCurrentMove,
     roundResult: params.roundStatus,
     matchResult:'You: '+ (params.playerRounds) + ' - ' + 'Comp: '+ (params.computerRounds)
   };
-  //funkcja ktora dodaje obiekt z parametrami rundy do tabliby progress
-  //console.log(values);
-  (function(){ 
-  params.progress.push(values);
-  console.log(params.progress);
   var valuesLength = Object.keys(values);
-  console.log(valuesLength);
+  //console.log(valuesLength);
+  
+  //funkcja ktora dodaje obiekt z parametrami rundy do tabliby progress
+  (function(){ 
+  params.progress.push(values); // dodajemy parametry rundy do tablicy params.progress po kazdym kliknieciu w button
+  console.log(params.progress);
+  var testCell = Object.values(values); // parametry z kluczow w obiekcie values do wypelniania komorek w tabeli
+  console.log(testCell); 
 })();
-  // funkcja tworzaca tabele
+  // funkcja tworzaca tabele ( czy musze wyrzucic ja poza funkcje pushValues zeby tworzylo jedna tabele a nie co button clik)
   function createTable(){
     var tbl = document.createElement('table');
     tbl.classList.add('table');
-    var tbody = document.createElement('tbody');
+
+    var headers = ["Round nr", "Player move", "Computer move", "Round result", "Match result"];
+    //console.log(headers.length);
+    for ( var i = 0; i < headers.length; i++) {
+      var th = document.createElement('th');
+      th.innerHTML = headers[i];
+      tbl.appendChild(th);
+      //let tr = tbl.insertRow(i); // lepsza metoda
+    }
+
+    //var tbody = document.createElement('tbody');
     for ( var i = 0; i < params.progress.length; i++) {
       var tr = document.createElement('tr')
+      //tr.innerHTML = 'test row';
+      tbl.appendChild(tr);
+      //let tr = tbl.insertRow(i); // lepsza metoda
     }
-    /*for ( var j = 0; j < valuesLength; j++) {
+
+    for ( var j = 1; j < 6; j++) { // jak tutaj odwolac sie do zmiennej valuesLength ktora wynosi 5 i znajduje sie w funkcji( nie jest globalna ), a nie ustalac na sztywno liczby kolumn
       var td = document.createElement('td');
-    } */
-    tbody.appendChild(tr);
-    //tbody.appendChild(td);
-    tbl.appendChild(tbody);
+      td.innerHTML = 'testCell'; // jak umiescic tutaj wartosci z Object.values(values) i czy zmienic na testCell[i]
+      tr.appendChild(td);
+      //let cell = row.insertCell(j); // lepsza metoda
+    }
     tableOutput.appendChild(tbl);
   };
-  createTable();
+  createTable(); // wykonuje sie tyle razy ile kliknalem w button ponieważ jest wewnątrz funkcji a powinno tylko raz
 };
+
+//funkcja tworzaca tabele poza funkcja pushValues
+/*function createTable(){
+  var tbl = document.createElement('table');
+  tbl.classList.add('table');
+  var headers = ["Round nr", "Player move", "Computer move", "Round result", "Match result"];
+  var columnCount = headers.length;
+          //Add the header row.
+          var row = table.insertRow(-1);
+          for (var i = 0; i < columnCount; i++) {
+              var headerCell = document.createElement("TH");
+              headerCell.innerHTML = headers[i];
+              row.appendChild(headerCell);
+}; */
 
   
 
-  //funkcja playerMove - glowna funkcja
+//funkcja playerMove - glowna funkcja
 function playerMove(buttonClicked) {
     params.playerCurrentMove = buttonClicked; // dzieki temu do zmiennej w params trafi aktualny ruch gracza
     computerMove();

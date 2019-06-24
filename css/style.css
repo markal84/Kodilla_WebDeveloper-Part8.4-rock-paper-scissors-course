@@ -141,7 +141,7 @@ body {
 .modal {
   display: none;
   background: #fff;
-  max-width: 600px;
+  max-width: 1200px;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -179,5 +179,15 @@ body {
 .table {
   width: 80%;
   border: 1px solid #000;
+}
+
+.table th {
+  background-color: red;
+  height: 20px;
+}
+
+.table td {
+  background-color: green;
+  height: 10px;
 }
 /*# sourceMappingURL=style.css.map */
