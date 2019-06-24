@@ -13,7 +13,6 @@ var newGame = document.getElementById('newGame'); // przycisk new game
 var output = document.getElementById('output'); // pole do wyswietlania wyniku meczu
 var result = document.getElementById('result'); // pole do wyswietlania liczby wygranych rund
 var modalOutput = document.getElementById('modal-one-content'); //pole do wyswietlania wyniku meczu w modalu
-var tableOutput = document.getElementById('modal-one-table'); // pole do wyswietlania tabeli z przebiegiem gry w modalu
 var modalSummary = document.getElementById('modal-one'); // modal z wynikami i przebiegiem gry pokazywanym w tabeli
 
   //moves
@@ -33,6 +32,7 @@ var params = {
     roundStatus: '' //zmienna ktora bedzie wyswietlac won/lost lub draw dla danej rundy    
 };
 
+
 //functions
 
   //funkcja sluzaca do tworzenia obiektu i dodawania wartosci kluczow do obiektu
@@ -44,17 +44,42 @@ var pushValues = function(){
     roundResult: params.roundStatus,
     matchResult:'You: '+ (params.playerRounds) + ' - ' + 'Comp: '+ (params.computerRounds)
   };
-  var valuesLength = Object.keys(values);
-  //console.log(valuesLength);
+  //var valuesLength = Object.keys(values);
+  
   
   //funkcja ktora dodaje obiekt z parametrami rundy do tabliby progress
-  (function(){ 
   params.progress.push(values); // dodajemy parametry rundy do tablicy params.progress po kazdym kliknieciu w button
   console.log(params.progress);
-  var testCell = Object.values(values); // parametry z kluczow w obiekcie values do wypelniania komorek w tabeli
-  console.log(testCell); 
-})();
-  // funkcja tworzaca tabele ( czy musze wyrzucic ja poza funkcje pushValues zeby tworzylo jedna tabele a nie co button clik)
+  console.log(params.progress[0].matchResult);
+  //var testCell = Object.values(values); // parametry z kluczow w obiekcie values do wypelniania komorek w tabeli
+  //console.log(testCell); 
+};
+
+  //funkcja tworzaca tabele
+function createTable(){
+  var tbl = document.getElementById('modal-one-table'); // pole do wyswietlania tabeli z przebiegiem gry w modalu
+  //tbl.innerHTML = '';
+  tbl.innerHTML =
+  "<table><tr><th>Round nr</th><th>Player move</th><th>Computer move</th><th>Round result</th><th>Match result</th></tr>";
+  for (var i = 0; i < params.progress.length; i++) {
+    tbl.innerHTML +=
+    "<tr><td>" + "test cell" +
+    params.progress[i].noRound  +
+    "</td><td>" +
+    params.progress[i].playerMove +
+    "</td><td>" +
+    params.progress[i].computerMove +
+    "</td><td>" +
+    params.progress[i].roundResult +
+    "</td><td>" +
+    params.progress[i].matchResult +
+    "</td></tr></table>";
+  }
+  /*tbl.innerHTML +=  "<tr><td>" + "test cell" + "</td></tr>" + "</table>" ;*/
+                    
+};
+
+  /*// funkcja tworzaca tabele ( czy musze wyrzucic ja poza funkcje pushValues zeby tworzylo jedna tabele a nie co button clik)
   function createTable(){
     var tbl = document.createElement('table');
     tbl.classList.add('table');
@@ -79,13 +104,12 @@ var pushValues = function(){
     for ( var j = 1; j < 6; j++) { // jak tutaj odwolac sie do zmiennej valuesLength ktora wynosi 5 i znajduje sie w funkcji( nie jest globalna ), a nie ustalac na sztywno liczby kolumn
       var td = document.createElement('td');
       td.innerHTML = 'testCell'; // jak umiescic tutaj wartosci z Object.values(values) i czy zmienic na testCell[i]
-      tr.appendChild(td);
+      
       //let cell = row.insertCell(j); // lepsza metoda
     }
+    tr.appendChild(td);
     tableOutput.appendChild(tbl);
-  };
-  createTable(); // wykonuje sie tyle razy ile kliknalem w button ponieważ jest wewnątrz funkcji a powinno tylko raz
-};
+  }; */
 
 //funkcja tworzaca tabele poza funkcja pushValues
 /*function createTable(){
@@ -108,7 +132,6 @@ function playerMove(buttonClicked) {
     params.playerCurrentMove = buttonClicked; // dzieki temu do zmiennej w params trafi aktualny ruch gracza
     computerMove();
     params.noRounds++; // each click increase round number
-    pushValues();
     switch (buttonClicked + computerButton) { //funkcja decydujaca o wyniku
         case 'rockscissors':
         case 'paperrock':
@@ -118,6 +141,8 @@ function playerMove(buttonClicked) {
             params.playerRounds++;
             //console.log('player won games: '+ params.playerRounds);
             displayWonRounds();
+            pushValues();
+            //console.log(params.progress[0].matchResult);
             checkIfWon();
             break;
         case 'rockpaper':
@@ -128,6 +153,7 @@ function playerMove(buttonClicked) {
             params.computerRounds++;
             //console.log('computer won games: '+ params.computerRounds);
             displayWonRounds();
+            pushValues();
             checkIfWon();
             break;
         case 'rockrock':
@@ -135,6 +161,7 @@ function playerMove(buttonClicked) {
         case 'scissorsscissors':
             params.roundStatus = 'Draw';
             displayText('DRAW! : You played ' + '<b>' + buttonClicked + '</b>' + ', computer also played ' + '<b>' + computerButton + '</b>');
+            pushValues();
             break;             
     }; 
 };
@@ -235,7 +262,7 @@ function computerMove(){
         rock.style.visibility = "hidden";
         scissors.style.visibility = "hidden";
     }else{
-        console.log('draw');
+        //console.log('draw');
     }
   };
 
@@ -298,4 +325,6 @@ function computerMove(){
 	}
 	
   
-})();   
+})();
+
+createTable(); // funkcja tworzenia tablicy
