@@ -44,26 +44,22 @@ var pushValues = function(){
     roundResult: params.roundStatus,
     matchResult:'You: '+ (params.playerRounds) + ' - ' + 'Comp: '+ (params.computerRounds)
   };
-  //var valuesLength = Object.keys(values);
-  
-  
   //funkcja ktora dodaje obiekt z parametrami rundy do tabliby progress
   params.progress.push(values); // dodajemy parametry rundy do tablicy params.progress po kazdym kliknieciu w button
   console.log(params.progress);
-  console.log(params.progress[0].matchResult);
-  //var testCell = Object.values(values); // parametry z kluczow w obiekcie values do wypelniania komorek w tabeli
-  //console.log(testCell); 
 };
 
-  //funkcja tworzaca tabele
-function createTable(){
-  var tbl = document.getElementById('modal-one-table'); // pole do wyswietlania tabeli z przebiegiem gry w modalu
-  //tbl.innerHTML = '';
+
+// funkcja tworzaca tabele
+function createTable() {
+  var tbl = document.getElementById("table-score");
+  tbl.innerHTML = '';
   tbl.innerHTML =
-  "<table><tr><th>Round nr</th><th>Player move</th><th>Computer move</th><th>Round result</th><th>Match result</th></tr>";
+    "<tr><th>Round nr</th><th>Player move</th><th>Computer move</th><th>Round result</th><th>Match result</th></tr>";
+ 
   for (var i = 0; i < params.progress.length; i++) {
     tbl.innerHTML +=
-    "<tr><td>" + "test cell" +
+    "<tr><td>" +
     params.progress[i].noRound  +
     "</td><td>" +
     params.progress[i].playerMove +
@@ -73,59 +69,10 @@ function createTable(){
     params.progress[i].roundResult +
     "</td><td>" +
     params.progress[i].matchResult +
-    "</td></tr></table>";
+    "</td></tr>";
   }
-  /*tbl.innerHTML +=  "<tr><td>" + "test cell" + "</td></tr>" + "</table>" ;*/
-                    
-};
+}
 
-  /*// funkcja tworzaca tabele ( czy musze wyrzucic ja poza funkcje pushValues zeby tworzylo jedna tabele a nie co button clik)
-  function createTable(){
-    var tbl = document.createElement('table');
-    tbl.classList.add('table');
-
-    var headers = ["Round nr", "Player move", "Computer move", "Round result", "Match result"];
-    //console.log(headers.length);
-    for ( var i = 0; i < headers.length; i++) {
-      var th = document.createElement('th');
-      th.innerHTML = headers[i];
-      tbl.appendChild(th);
-      //let tr = tbl.insertRow(i); // lepsza metoda
-    }
-
-    //var tbody = document.createElement('tbody');
-    for ( var i = 0; i < params.progress.length; i++) {
-      var tr = document.createElement('tr')
-      //tr.innerHTML = 'test row';
-      tbl.appendChild(tr);
-      //let tr = tbl.insertRow(i); // lepsza metoda
-    }
-
-    for ( var j = 1; j < 6; j++) { // jak tutaj odwolac sie do zmiennej valuesLength ktora wynosi 5 i znajduje sie w funkcji( nie jest globalna ), a nie ustalac na sztywno liczby kolumn
-      var td = document.createElement('td');
-      td.innerHTML = 'testCell'; // jak umiescic tutaj wartosci z Object.values(values) i czy zmienic na testCell[i]
-      
-      //let cell = row.insertCell(j); // lepsza metoda
-    }
-    tr.appendChild(td);
-    tableOutput.appendChild(tbl);
-  }; */
-
-//funkcja tworzaca tabele poza funkcja pushValues
-/*function createTable(){
-  var tbl = document.createElement('table');
-  tbl.classList.add('table');
-  var headers = ["Round nr", "Player move", "Computer move", "Round result", "Match result"];
-  var columnCount = headers.length;
-          //Add the header row.
-          var row = table.insertRow(-1);
-          for (var i = 0; i < columnCount; i++) {
-              var headerCell = document.createElement("TH");
-              headerCell.innerHTML = headers[i];
-              row.appendChild(headerCell);
-}; */
-
-  
 
 //funkcja playerMove - glowna funkcja
 function playerMove(buttonClicked) {
@@ -144,6 +91,7 @@ function playerMove(buttonClicked) {
             pushValues();
             //console.log(params.progress[0].matchResult);
             checkIfWon();
+            createTable(); // funkcja tworzenia tablicy
             break;
         case 'rockpaper':
         case 'paperscissors':
@@ -155,6 +103,7 @@ function playerMove(buttonClicked) {
             displayWonRounds();
             pushValues();
             checkIfWon();
+            createTable(); // funkcja tworzenia tablicy
             break;
         case 'rockrock':
         case 'paperpaper':
@@ -162,6 +111,7 @@ function playerMove(buttonClicked) {
             params.roundStatus = 'Draw';
             displayText('DRAW! : You played ' + '<b>' + buttonClicked + '</b>' + ', computer also played ' + '<b>' + computerButton + '</b>');
             pushValues();
+            createTable(); // funkcja tworzenia tablicy
             break;             
     }; 
 };
@@ -269,27 +219,17 @@ function computerMove(){
 // modals code
 
 (function(){ 
-	/* W kodzie HTML i CSS dodaliśmy style dla prostego modala, który będzie zawsze wyśrodkowany w oknie. 
-	
-	Teraz wystarczy napisać funkcję otwierającą modal:
-	*/
 	
 	var showModal = function(event){
 		event.preventDefault();
 		document.querySelector('#modal-overlay').classList.add('show');
-    /*var link = this.getAttribute('href'); // oobieramy atrybut z wlasciwosci href kliknietego linku 
-    console.log(link);
-    link = link.replace('#', ''); // usuwamy # z atrybutu href
-    console.log("after using replace() on link variable: " + link);
-    var selectedModal = document.getElementById(link); // zaznaczamy modal o Id kliknietego linku */
     
     for(var i = 0; i < modalLinks.length; i++) {
       modals[i].classList.remove('show');
     }
-    selectedModal.classList.add('show'); // zmienic ten parametr do gry kamien nozyce
+    selectedModal.classList.add('show'); 
 	};
 	
-	// Mimo, że obecnie mamy tylko jeden link, stosujemy kod dla wielu linków. W ten sposób nie będzie trzeba go zmieniać, kiedy zechcemy mieć więcej linków lub guzików otwierających modale
 	
 	var modalLinks = document.querySelectorAll('.show-modal');
 	
@@ -297,7 +237,6 @@ function computerMove(){
 		modalLinks[i].addEventListener('click', showModal);
 	}
 	
-	// Dodajemy też funkcję zamykającą modal, oraz przywiązujemy ją do kliknięć na elemencie z klasą "close". 
 
 	var hideModal = function(event){
 		event.preventDefault();
@@ -310,11 +249,9 @@ function computerMove(){
 		closeButtons[i].addEventListener('click', hideModal);
 	}
 	
-	// Dobrą praktyką jest również umożliwianie zamykania modala poprzez kliknięcie w overlay. 
 	
 	document.querySelector('#modal-overlay').addEventListener('click', hideModal);
 	
-	// Musimy jednak pamiętać, aby zablokować propagację kliknięć z samego modala - inaczej każde kliknięcie wewnątrz modala również zamykałoby go. 
 	
 	var modals = document.querySelectorAll('.modal');
 	
@@ -327,4 +264,4 @@ function computerMove(){
   
 })();
 
-createTable(); // funkcja tworzenia tablicy
+

@@ -130,17 +130,16 @@ body {
 
 //table
 .table {
-  width: 80%;
+  width: auto;
   border: 1px solid #000;
   th {
     background-color: red;
     height: 20px;
   }
-  tr {
-
-  }
   td {
     background-color: green;
-    height: 10px;
+    height: 15px;
+    padding: 10px;
+    color: white
   }
 }

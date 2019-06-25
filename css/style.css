@@ -177,7 +177,7 @@ body {
 }
 
 .table {
-  width: 80%;
+  width: auto;
   border: 1px solid #000;
 }
 
@@ -188,6 +188,8 @@ body {
 
 .table td {
   background-color: green;
-  height: 10px;
+  height: 15px;
+  padding: 10px;
+  color: white;
 }
 /*# sourceMappingURL=style.css.map */
